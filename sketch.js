@@ -58,7 +58,20 @@ class Tablero {
     }
       
 }
-
+class Obstaculo {
+constructor(x, y) {
+this.x = x;
+this.y = y;
+}
+    dibujar() {
+    let tam = tamCelda;
+    let x = (this.x * tamCelda) ;
+    let y = (this.y * tamCelda) ;
+    fill(255, 0, 0);
+    stroke(0);
+    rect(x, y, tamCelda, tamCelda);
+}
+    }
 
 class Celda {
     constructor(x, y) {
@@ -76,32 +89,80 @@ class Celda {
   }
   
   class Robot {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-  
-    dibujar() {
-      // Dibuja el robot en la posición actual
-      let tam = tamCelda;
-      let x = (this.x * tamCelda) ;
-      let y = (this.y * tamCelda) ;
-      image(img_rover, x, y, tam, tam);
-    }
-  
-    mover(dx, dy) {
-      // Actualiza las coordenadas del robot según el desplazamiento especificado
-      let newX = this.x + dx;
-      let newY = this.y + dy;
-  
-      // Comprueba que la nueva posición está dentro del tablero
-      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-        this.x = newX;
-        this.y = newY;
-      }
-    }
+constructor(x, y) {
+this.x = x;
+this.y = y;
+this.ruta = [];
+}
+   dibujar() {
+  // Dibuja el robot en la posición actual
+  let tam = tamCelda;
+  let x = (this.x * tamCelda) ;
+  let y = (this.y * tamCelda) ;
+  image(img_rover, x, y, tam, tam);
+}
 
-    
+mover(dx, dy) {
+  // Actualiza las coordenadas del robot según el desplazamiento especificado
+  let newX = this.x + dx;
+  let newY = this.y + dy;
+
+  // Comprueba que la nueva posición está dentro del tablero y no está bloqueada por un obstáculo
+  if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
+    this.x = newX;
+    this.y = newY;
   }
+}
+
+seguirRuta() {
+    if (this.ruta.length > 0) {
+        let siguienteCelda = this.ruta[0];
+        let dx = siguienteCelda.x - this.x;
+        let dy = siguienteCelda.y - this.y;
+
+        this.mover(dx, dy);
+
+        if (dx == 0 && dy == 0) {
+            this.ruta.shift();
+        }
+    }
+}
+
+function planificarRuta(inicio, destino, tablero) {
+// Implementa aquí tu algoritmo de búsqueda o planificación de rutas
+// Puedes utilizar diferentes algoritmos como A*, BFS, DFS, etc.
+}
+
+// Función que se ejecuta cuando se presiona la tecla "p"
+function activarModoProgramacion() {
+modoProgramacion = true;
+}
+
+// Función que se ejecuta cuando se presiona la tecla "Enter" en el modo de programación
+function ejecutarPrograma(programa) {
+// Ejecuta el programa para mover los robots
+// El programa debe ser una lista de comandos como ["arriba", "izquierda", "derecha", "abajo"]
+}
+
+let modoProgramacion = false;
+let programaActual = [];
+
+function keyPressed() {
+if (modoProgramacion) {
+if (keyCode == ENTER) {
+ejecutarPrograma(programaActual);
+programaActual = [];
+modoProgramacion = false;
+} else {
+let comando = "";
+if (keyCode == UP_ARROW) {
+comando = "arriba";
+} else if (keyCode == DOWN_ARROW) {
+comando = "abajo";
+} else if (keyCode == LEFT_ARROW) {
+comando = "izquierda";
+} else if (keyCode == RIGHT_ARROW) {
+comando = "derecha";
+}
   
 
