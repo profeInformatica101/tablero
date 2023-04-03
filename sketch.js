@@ -45,33 +45,55 @@ class Tablero {
       
       this.celdas = [];
       this.robots = [];
+      this.obstaculos = [];
 
       for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
           this.celdas.push(new Celda(i, j));
         }
       }
+
+      // Añade obstáculos al tablero
+      this.obstaculos.push(new Obstaculo(2, 2));
+      this.obstaculos.push(new Obstaculo(2, 3));
+      this.obstaculos.push(new Obstaculo(3, 3));
+      this.obstaculos.push(new Obstaculo(4, 3));
+      this.obstaculos.push(new Obstaculo(5, 3));
+      this.obstaculos.push(new Obstaculo(5, 2));
+      this.obstaculos.push(new Obstaculo(5, 1));
+      this.obstaculos.push(new Obstaculo(4, 1));
     }
 
     dibujar(){
         this.celdas.forEach(celda => celda.dibujar());
+        this.obstaculos.forEach(obstaculo => obstaculo.dibujar());
     }
-      
-}
+
+    esCeldaBloqueada(x, y) {
+        // Comprueba si una celda está bloqueada por un obstáculo
+        for (let obstaculo of this.obstaculos) {
+            if (obstaculo.x == x && obstaculo.y == y) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 class Obstaculo {
-constructor(x, y) {
-this.x = x;
-this.y = y;
-}
-    dibujar() {
-    let tam = tamCelda;
-    let x = (this.x * tamCelda) ;
-    let y = (this.y * tamCelda) ;
-    fill(255, 0, 0);
-    stroke(0);
-    rect(x, y, tamCelda, tamCelda);
-}
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
     }
+
+    dibujar() {
+        let tam = tamCelda;
+        let x = (this.x * tamCelda) ;
+        let y = (this.y * tamCelda) ;
+        fill(255, 0, 0);
+        stroke(0);
+        rect(x, y, tamCelda, tamCelda);
+    }
+}
 
 class Celda {
     constructor(x, y) {
