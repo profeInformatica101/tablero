@@ -170,21 +170,26 @@ let modoProgramacion = false;
 let programaActual = [];
 
 function keyPressed() {
-if (modoProgramacion) {
-if (keyCode == ENTER) {
-ejecutarPrograma(programaActual);
-programaActual = [];
-modoProgramacion = false;
-} else {
-let comando = "";
-if (keyCode == UP_ARROW) {
-comando = "arriba";
-} else if (keyCode == DOWN_ARROW) {
-comando = "abajo";
-} else if (keyCode == LEFT_ARROW) {
-comando = "izquierda";
-} else if (keyCode == RIGHT_ARROW) {
-comando = "derecha";
+  if (modoProgramacion) {
+    if (keyCode == ENTER) {
+      ejecutarPrograma(programaActual);
+      programaActual = [];
+      modoProgramacion = false;
+    } else {
+      let comando = "";
+      if (keyCode == UP_ARROW) {
+        comando = "arriba";
+      } else if (keyCode == DOWN_ARROW) {
+        comando = "abajo";
+      } else if (keyCode == LEFT_ARROW) {
+        comando = "izquierda";
+      } else if (keyCode == RIGHT_ARROW) {
+        comando = "derecha";
+      }
+      // Implementa aquí la lógica para agregar el comando a programaActual
+    }
+  }
+}
 }
   
 
