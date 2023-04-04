@@ -16,6 +16,9 @@ function setup() {
 
   //Creamos tablero y lo dibujamos
   tablero = new Tablero();
+  // Ejemplo de cómo agregar obstáculos al tablero
+tablero.generarLaberinto();
+
   tablero.dibujar();
 
   r1 = new Robot(0, 0);
@@ -54,10 +57,28 @@ class Tablero {
 
   dibujar() {
     this.celdas.forEach(celda => celda.dibujar());
+    this.obstaculos.forEach(obstaculo => obstaculo.dibujar()); // Asegúrate de que esta línea esté presente
   }
-
   esCeldaBloqueada(x, y) {
     return this.robots.some(robot => robot.x == x && robot.y == y) || this.obstaculos.some(obstaculo => obstaculo.x == x && obstaculo.y == y);
+  }
+
+  agregarObstaculo(x, y) {
+    this.obstaculos.push(new Obstaculo(x, y));
+  }
+
+  generarLaberinto() {
+    const probabilidadObstaculo = 0.25; // Ajusta la probabilidad de tener obstáculos en el tablero (0 a 1)
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (Math.random() < probabilidadObstaculo) {
+          // Asegúrate de no colocar obstáculos en las posiciones iniciales de los robots
+          if (!((i === 0 && j === 0) || (i === 0 && j === 1))) {
+            this.agregarObstaculo(i, j);
+          }
+        }
+      }
+    }
   }
 }
 
@@ -76,6 +97,8 @@ class Obstaculo {
     stroke(0);
     rect(x, y, tamCelda, tamCelda);
   }
+
+  
 }
 
 class Celda {
@@ -99,6 +122,7 @@ class Robot {
     this.x = x;
     this.y = y;
     this.ruta = [];
+    this.angulo = 0; // Agrega un atributo angulo para controlar la rotación de la imagen
   }
 
   dibujar() {
@@ -106,21 +130,55 @@ class Robot {
     let tam = tamCelda;
     let x = (this.x * tamCelda);
     let y = (this.y * tamCelda);
-    image(img_rover, x, y, tam, tam);
+    push();
+    translate(x + tam / 2, y + tam / 2);
+    rotate(radians(this.angulo));
+    image(img_rover, -tam / 2, -tam / 2, tam, tam);
+    pop();
   }
-
-  mover(dx, dy) {
-    // Actualiza las coordenadas del robot según el desplazamiento especificado
+  detectarObstaculo(dx, dy) {
     let newX = this.x + dx;
     let newY = this.y + dy;
-
-    // Comprueba que la nueva posición está dentro del tablero
-    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-      this.x = newX;
-      this.y = newY;
+    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && tablero.esCeldaBloqueada(newX, newY)) {
+      return true;
     }
+    return false;
   }
-
+  mover(dx, dy) {
+    let obstaculoDetectado = false;
+    do {
+      let newX = this.x + dx;
+      let newY = this.y + dy;
+      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
+        // No hay obstáculo, avanzamos en la dirección especificada
+        this.x = newX;
+        this.y = newY;
+        obstaculoDetectado = false;
+      } else {
+        // Hay un obstáculo, giramos 90 grados y comprobamos de nuevo
+        [dx, dy] = [dy, -dx];
+        this.angulo += 90;
+        obstaculoDetectado = true;
+      }
+    } while (obstaculoDetectado);
+  }mover(dx, dy) {
+    let obstaculoDetectado = false;
+    do {
+      let newX = this.x + dx;
+      let newY = this.y + dy;
+      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
+        // No hay obstáculo, avanzamos en la dirección especificada
+        this.x = newX;
+        this.y = newY;
+        obstaculoDetectado = false;
+      } else {
+        // Hay un obstáculo, giramos 90 grados y comprobamos de nuevo
+        [dx, dy] = [dy, -dx];
+        this.angulo += 90;
+        obstaculoDetectado = true;
+      }
+    } while (obstaculoDetectado);
+  }
   buscarRuta(destX, destY) {
     // Algoritmo de búsqueda de ruta
     // Actualiza el arreglo this.ruta con la secuencia de movimientos a realizar
