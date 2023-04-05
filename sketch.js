@@ -136,6 +136,36 @@ class Robot {
     image(img_rover, -tam / 2, -tam / 2, tam, tam);
     pop();
   }
+  mover(dx, dy) {
+  let obstaculoDetectado = false;
+  do {
+    let newX = this.x + dx;
+    let newY = this.y + dy;
+    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
+      // No hay obstáculo, avanzamos en la dirección especificada
+      this.x = newX;
+      this.y = newY;
+      obstaculoDetectado = false;
+    } else {
+      // Hay un obstáculo, giramos 90 grados y comprobamos de nuevo
+      [dx, dy] = [dy, -dx];
+      obstaculoDetectado = true;
+    }
+  } while (obstaculoDetectado);
+
+  // Establecer el ángulo según la dirección del movimiento
+  if (dx === 1 && dy === 0) {
+    this.angulo = 0;
+  } else if (dx === 0 && dy === 1) {
+    this.angulo = 90;
+  } else if (dx === -1 && dy === 0) {
+    this.angulo = 180;
+  } else if (dx === 0 && dy === -1) {
+    this.angulo = 270;
+  }
+}
+
+  
   detectarObstaculo(dx, dy) {
     let newX = this.x + dx;
     let newY = this.y + dy;
@@ -144,41 +174,7 @@ class Robot {
     }
     return false;
   }
-  mover(dx, dy) {
-    let obstaculoDetectado = false;
-    do {
-      let newX = this.x + dx;
-      let newY = this.y + dy;
-      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
-        // No hay obstáculo, avanzamos en la dirección especificada
-        this.x = newX;
-        this.y = newY;
-        obstaculoDetectado = false;
-      } else {
-        // Hay un obstáculo, giramos 90 grados y comprobamos de nuevo
-        [dx, dy] = [dy, -dx];
-        this.angulo += 90;
-        obstaculoDetectado = true;
-      }
-    } while (obstaculoDetectado);
-  }mover(dx, dy) {
-    let obstaculoDetectado = false;
-    do {
-      let newX = this.x + dx;
-      let newY = this.y + dy;
-      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && !tablero.esCeldaBloqueada(newX, newY)) {
-        // No hay obstáculo, avanzamos en la dirección especificada
-        this.x = newX;
-        this.y = newY;
-        obstaculoDetectado = false;
-      } else {
-        // Hay un obstáculo, giramos 90 grados y comprobamos de nuevo
-        [dx, dy] = [dy, -dx];
-        this.angulo += 90;
-        obstaculoDetectado = true;
-      }
-    } while (obstaculoDetectado);
-  }
+ 
   buscarRuta(destX, destY) {
     // Algoritmo de búsqueda de ruta
     // Actualiza el arreglo this.ruta con la secuencia de movimientos a realizar
