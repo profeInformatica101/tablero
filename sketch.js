@@ -1,4 +1,11 @@
-function setup(){
+const tamCelda = 50;
+const url_image_rover = "https://i.ibb.co/XFj3bCR/microrove.png";
+
+//Variable para guardar la imagen del robot;
+let img_rover;
+
+//corre solo una vez cuando inicia el programa
+function setup() {
 console.log("setup - frameCount:" + frameCount);
 
   //Cargamos la imagen
