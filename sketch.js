@@ -1,4 +1,5 @@
-ole.log("setup - frameCount:" + frameCount);
+function setup(){
+console.log("setup - frameCount:" + frameCount);
 
   //Cargamos la imagen
   img_rover = loadImage(url_image_rover);
