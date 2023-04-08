@@ -1,4 +1,5 @@
 const tamCelda = 50;
+let rutaEncontrada = false;
 const url_image_rover = "https://raw.githubusercontent.com/profeInformatica101/tablero/main/robot/rover.png";
 //Variable para guardar la imagen del robot;
 let img_rover;
@@ -28,7 +29,7 @@ function setup() {
   
   r1 = new Robot(0, 7);
 }
-let rutaEncontrada = false;
+
 //corre continuamente después de la función setup
 function draw() {
   //console.log("draw - frameCount:" + frameCount);
