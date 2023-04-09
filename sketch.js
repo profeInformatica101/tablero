@@ -144,7 +144,7 @@ class Objetivo {
     let tam = tamCelda;
     let x = (this.x * tamCelda);
     let y = (this.y * tamCelda);
-    fill(0, 0, 255);
+    fill('green');
     stroke(0);
     rect(x, y, tamCelda, tamCelda);
   }
