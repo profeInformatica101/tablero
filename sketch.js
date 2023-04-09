@@ -22,12 +22,12 @@ function setup() {
   //tablero.agregarObstaculo(0,2);
   //tablero.agregarObstaculo(1,6);
   tablero.agregarObstaculo(3,7);
-  tablero.agregarObjetivo(5, 0); // Agregar un objetivo en la posición (7, 0)
+  tablero.agregarObjetivo(4, 0); // Agregar un objetivo en la posición (7, 0)
   tablero.dibujar();
 
  // r1 = new Robot(0, 7);
   
-  r1 = new Robot(5, 7);
+  r1 = new Robot(4, 7);
 }
 
 //corre continuamente después de la función setup
