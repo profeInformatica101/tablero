@@ -21,18 +21,22 @@ function setup() {
   //tablero.generarLaberinto();
   //tablero.agregarObstaculo(0,2);
   //tablero.agregarObstaculo(1,6);
-  tablero.agregarObstaculo(3,7);
-  tablero.agregarObjetivo(4, 0); // Agregar un objetivo en la posición (7, 0)
+  tablero.agregarObstaculo(2,5);
+  tablero.agregarObstaculo(4,4); // Agregar obstáculo en la posición (4,4)
+  tablero.agregarObjetivo(4, 0); // Agregar un objetivo en la posición (4, 0)
   tablero.dibujar();
 
- // r1 = new Robot(0, 7);
-  
   r1 = new Robot(4, 7);
+  actualizar();
 }
 
 //corre continuamente después de la función setup
 function draw() {
   //console.log("draw - frameCount:" + frameCount);
+  // Se quita el dibujado del tablero y del robot para evitar flickering
+}
+
+function actualizar() {
   clear();
   tablero.dibujar();
   r1.dibujar();
@@ -42,8 +46,6 @@ function draw() {
     console.log("Objetivo alcanzado");
    // alert("Objetivo alcanzado");
   }
-
-
 }
 
 function objetivoAlcanzado(robot) {
@@ -51,14 +53,21 @@ function objetivoAlcanzado(robot) {
 }
 
 function movimientos(robot) {
- /** if (robot.estaBloqueado()) {
-    console.log("girar");
-    robot.girarIzquierda();
-  } else {
-    robot.moverCelda(1);
-  }
-  */
- robot.moverCelda(1);
+  // Se agrega temporizador para mover el robot cada 2 segundos
+  setTimeout(function() {
+    if (robot.estaBloqueado()) {
+      console.log("girar");
+      // Se agrega condicional para que el robot gire a la izquierda o derecha si encuentra un obstáculo
+      if (Math.random() > 0.5) {
+        robot.girarIzquierda();
+      } else {
+        robot.girarDerecha();
+      }
+    } else {
+      robot.moverCelda(1);
+    }
+    actualizar();
+  }, 2000);
 }
 
 
